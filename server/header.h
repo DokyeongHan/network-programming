@@ -10,6 +10,8 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <sys/wait.h>
+#define BUFSIZE 1024
+
 struct userInfo{
     char ID[20];
     char PW[20];
@@ -34,7 +36,8 @@ struct roomList{
 struct userInfo u1;
 struct socketInfo s1;
 struct roomList roomList[3000];
-char roomname[30];
+char buffer[BUFSIZE+1];
+char buffer2[BUFSIZE+1];
 
 
 // com.c
@@ -43,11 +46,17 @@ void create_packet(char type, char mode, char *data ,char *buf);
 void send_packet(int sockfd, char *buf, struct sockaddr_in clntAddr);
 
 // server_chat.c
+void server_chat(char *message);
+void server_choice_chat_room();
+void server_room_search(char *buff);
+void server_room_follow(char *buff);
 
 // server_board.c
+void server_post_act(char CRUD);
+void server_comment_act(char CRUD);
 
 // server_manage.c
-void server_manage_room();
+void server_manage_room(char *roomname);
 void server_manage_board();
 
 // server_user.c

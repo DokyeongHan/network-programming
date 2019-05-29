@@ -5,10 +5,10 @@
 
 최초변경일: 2019-05-26
 
-프로그램 목적: 프로젝트 
+프로그램 목적: 로그인, 회원가입을 위한 요청
 
 개정이력: 
-(2019-05-26) 로그인 함수
+(2019-05-26) client_login, client_signup 함수 작성
 
 저작권: 5조
 */ 
@@ -20,8 +20,8 @@ void client_login(){
     // 변수 선언
     char buf[BUFF_SIZE+1];
     char data[BUFF_SIZE+1];
-    char ID[20];
-    char PW[20];
+    char ID[BUFF_SIZE+1];
+    char PW[BUFF_SIZE+1];
 
     // 변수 초기화
     memset(buf, 0, BUFF_SIZE+1);
@@ -54,9 +54,9 @@ void client_signup(){
     // 변수 선언
     char buf[BUFF_SIZE+1];
     char data[BUFF_SIZE+1];
-    char ID[20];
-    char PW[20];
-    char NAME[20];
+    char ID[BUFF_SIZE+1];
+    char PW[BUFF_SIZE+1];
+    char NAME[BUFF_SIZE+1];
 
     // 변수 초기화
     memset(buf, 0, BUFF_SIZE+1);

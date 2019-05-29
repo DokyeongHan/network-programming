@@ -10,7 +10,7 @@
 개정이력: 
 (2019-03-24)  표준코딩 규칙 적용 
 
-저작권: 
+저작권: 5조
 */ 
 
 #include "header.h"
@@ -21,7 +21,7 @@ int main( int argc, char **argv)
 {
 	int   sock;
 	int   server_addr_size;
-	struct sockaddr_in   server_addr;
+	struct sockaddr_in server_addr;
 	char buff_rcv[BUFF_SIZE+1];
 	char buff_snd[BUFF_SIZE+1];
 	char data[BUFF_SIZE+1];
@@ -54,21 +54,25 @@ int main( int argc, char **argv)
 
 		// char CRUD[1];
 		// memset(CRUD, 'C', 1);
-		// client_manage_board('C');
+		client_chat();
 
-		
+		// client_choice_chat_room('C');
+
+		// client_comment_act('C');
+
+		// client_room_follow();
 
 		// // Send echo string
 		// test = sendto(sock, buff_snd, strlen(buff_snd)+1, 0,    // +1: NULL까지 포함해서 전송
 		// 			(struct sockaddr*)&server_addr, sizeof(server_addr));
 		
 		// Receive echo string
-		recvfrom(sock, buff_rcv, BUFF_SIZE, 0 , 
-				(struct sockaddr*)&server_addr, &server_addr_size);
+		// recvfrom(sock, buff_rcv, BUFF_SIZE, 0 , 
+		// 		(struct sockaddr*)&server_addr, &server_addr_size);
 		
 		// Print echoed string
-		printf("receive: %s\n", buff_rcv);
-		sleep(1);
+		// printf("receive: %s\n", buff_rcv);
+		// sleep(1);
 	}
 		
 	// Close the socket

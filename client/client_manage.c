@@ -5,10 +5,10 @@
 
 최초변경일: 2019-05-26
 
-프로그램 목적: 프로젝트 
+프로그램 목적: 채팅방, 게시판 생성, 삭제를 위한 요청
 
 개정이력: 
-(2019-05-26) 방 생성 요청
+(2019-05-26) client_manage_room, client_manage_board 함수 작성
 
 저작권: 5조
 */ 
@@ -20,7 +20,7 @@ void client_manage_room(char CRUD){
     // 변수 선언
     char buf[BUFF_SIZE+1];
     char data[BUFF_SIZE+1];
-    char roomname[30];
+    char roomname[BUFF_SIZE+1];
 
     // 변수 초기화
     memset(buf, 0, BUFF_SIZE+1);
@@ -44,7 +44,7 @@ void client_manage_board(char CRUD){
     // 변수 선언
     char buf[BUFF_SIZE+1];
     char data[BUFF_SIZE+1];
-    char boardname[30];
+    char boardname[BUFF_SIZE+1];
 
     // 변수 초기화
     memset(buf, 0, BUFF_SIZE+1);

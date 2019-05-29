@@ -17,7 +17,7 @@
 #define BUFSIZE 1024
 
 // 방 만들기
-void server_manage_room(){
+void server_manage_room(char *roomname){
     char buf[BUFSIZE+1];
     memset(buf, 0, BUFSIZE+1);
 
@@ -37,7 +37,7 @@ void server_manage_room(){
 }
 
 // // 게시판 처리
-void server_manage_board(){
+void server_manage_board(char *boardname){
     char buf[BUFSIZE+1];
     memset(buf, 0, BUFSIZE+1);
 
@@ -45,8 +45,8 @@ void server_manage_board(){
 
     // 게시판 만들기 성공
     printf("create success\n");
-    create_packet(9, 2,"성공", buf); // 응답패킷 만들어서
+    create_packet(9, 2, "성공", buf); // 응답패킷 만들어서
     send_packet(s1.sockfd, buf, s1.clntAddr); // 전송
 
-    // 방만들기 실패
+    // 게시판 만들기 실패
 }

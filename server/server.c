@@ -71,7 +71,7 @@ int main(void){
             s1.sockfd = sockfd;
             
             // 요청 패킷 출력
-            printf("Recevied: %d\n clntaddr: %d\n", recvBuffer[4], clntAddr.sin_addr.s_addr);
+            printf("Recevied: %s\n clntaddr: %d\n", recvBuffer, clntAddr.sin_addr.s_addr);
 
             // 패킷 처리
             receive_packet(recvBuffer);
