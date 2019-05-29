@@ -23,14 +23,14 @@ void server_login(struct userInfo u1){
 
     // 로그인 성공
     if(!strcmp(u1.ID, "hdk0521") && !strcmp(u1.PW, "123123")){
-        printf("login success\n"); 
-        create_packet(1,2,"성공", buf); // 응답패킷 만들어서
+        printf("[RES] login success: ID (%s), PW (%s)\n", u1.ID, u1.PW); 
+        create_packet(1,2,"1", buf); // 응답패킷 만들어서
         send_packet(s1.sockfd, buf, s1.clntAddr); // 전송
     }
     // 로그인 실패
     else{
-        printf("login failed\n");
-        create_packet(1,2,"실패", buf); // 응답패킷 만들어서
+        printf("[RES] login failed: ID (%s), PW (%s)\n", u1.ID, u1.PW); 
+        create_packet(1,2,"2", buf); // 응답패킷 만들어서
         send_packet(s1.sockfd, buf, s1.clntAddr); // 전송
     }
 }
@@ -40,7 +40,7 @@ void server_signup(struct userInfo u1){
         char buf[BUFSIZE+1];
         memset(buf, 0, BUFSIZE+1);
     
-        printf("signup success\n"); 
-        create_packet(2, 2,"성공", buf); // 응답패킷 만들어서
+        printf("[RES] signup success: ID (%s), PW (%s), NAME (%s)\n", u1.ID, u1.PW, u1.NAME); 
+        create_packet(2, 2,"1", buf); // 응답패킷 만들어서
         send_packet(s1.sockfd, buf, s1.clntAddr); // 전송
 }

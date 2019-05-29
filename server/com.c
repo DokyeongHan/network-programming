@@ -48,126 +48,99 @@ void receive_packet(char *packet){
 
     // 01 로그인 요청 패킷
     if(!strncmp(type, &login,1) && !strncmp(mode, &req, 1)){
-        printf("로그인\n");
         memset(&u1, 0, sizeof(struct userInfo));
-        
         int sum = 0;
 
         strncpy(n, &packet[2], 1);
-        printf("ID length: %d\n", *n);
         strncpy(u1.ID, &packet[3], *n);
-        printf("ID: %s\n",u1.ID);
         sum += *n;
-
         strncpy(n, &packet[3+sum], 1);
-        printf("PW length: %d\n", *n);
         strncpy(u1.PW, &packet[4+sum], *n+1);
-        printf("PW: %s\n",u1.PW);
-        sum += *n;
 
-        printf("sum: %d\n",sum);
+        printf("[REQ] login: ID (%s), PW (%s)\n",u1.ID, u1.PW);
         server_login(u1);
     }
 
     // 02 회원가입 요청 패킷
     else if(!strncmp(type, &signup ,1) && !strncmp(mode, &req, 1)){
-        printf("회원가입\n");
         memset(&u1, 0, sizeof(struct userInfo));
-        
         int sum = 0;
 
         strncpy(n, &packet[2], 1);
-        printf("ID length: %d\n", *n);
         strncpy(u1.ID, &packet[3], *n);
-        printf("ID: %s\n",u1.ID);
         sum += *n;
-
         strncpy(n, &packet[3+sum], 1);
-        printf("PW length: %d\n", *n);
         strncpy(u1.PW, &packet[4+sum], *n);
-        printf("PW: %s\n",u1.PW);
         sum += *n;
-
         strncpy(n, &packet[4+sum], 1);
-        printf("NAME length: %d\n", *n);
         strncpy(u1.NAME, &packet[5+sum], *n);
-        printf("NAME: %s\n",u1.NAME);
-        sum += *n;
 
-        printf("sum: %d\n",sum);
+        printf("[REQ] signup: ID (%s), PW (%s), NAME (%s)\n", u1.ID, u1.PW, u1.NAME);
         server_signup(u1);
     }
 
     // 03 채팅방 접속 패킷
     else if(!strncmp(type, &chat_link, 1) && !strncmp(mode, &req, 1)){
-        printf("채팅방 접속\n");
-        memset(buffer, 0, sizeof(buffer));
+        memset(room_name, 0, sizeof(room_name));
 
         strncpy(n, &packet[2], 1);
-        printf("room_name length: %d\n", *n);
-        strncpy(buffer, &packet[3], *n);
-        printf("room_name: %s\n", buffer);
-        
+        strncpy(room_name, &packet[3], *n);
+
+        printf("[REQ] enter_room: ROOM_NAME (%s)\n", room_name);
         server_choice_chat_room(); 
     }
     
     // 04 채팅 메시지 패킷 (들어온 요청 처리)
     else if(!strncmp(type, &chat_message_rcv, 1) && !strncmp(mode, &req, 1)){
-        printf("채팅 메시지 수신\n");
         char buf[BUFF_SIZE+1];
         memset(buf, 0, sizeof(buf));
 
         strncpy(n,&packet[2],1);
-        printf("message length: %d\n", *n);
         strncpy(buf, &packet[3], *n);
-        printf("message : %s\n", buf);
 
+        printf("[REQ] message(room <- user): MESSAGE (%s), ROOM_NAME (%s)\n", buf, room_name);
         server_chat(buf);
     }
 
     // 05 채팅 메시지 패킷 (뿌린거 응답 처리)
     else if(!strncmp(type, &chat_message_snd, 1) && !strncmp(mode, &res, 2)){
-        printf("채팅 메시지 송신\n");
-        server_login(u1);
+        printf("[RES] message(room <- user) success: ROOM_NAME (%s)\n", room_name);
+        server_chat2();
     }
 
     // 06 게시글 패킷 처리
     else if(!strncmp(type, &post, 1) && !strncmp(mode, &req, 1)){
-        printf("게시글\n");
         int sum = 0;
+        char CRUD[2];
+        memset(CRUD, 0, sizeof(CRUD));
         memset(buffer, 0, sizeof(buffer));
         memset(buffer2, 0, sizeof(buffer2));
 
-        strncpy(n, &packet[2], 1);
-        printf("CRUD: %c\n", *n);
-
+        strncpy(CRUD, &packet[2], 1);
         strncpy(n, &packet[3], 1);
-        printf("TITLE length: %d\n", *n);
         strncpy(buffer, &packet[4], *n);
-        printf("TITLE: %s\n", buffer);
         sum += *n;
-
         strncpy(n, &packet[4+sum], 1);
-        printf("DES length: %d\n", *n);
         strncpy(buffer2, &packet[5+sum], *n);
-        printf("DES: %s\n", buffer2);
-        sum += *n;
 
-        printf("sum: %d\n",sum);
+        printf("[REQ] POST_ACT: CRUD (%s), TITLE (%s), DESCRIPTION (%s)\n", CRUD, buffer, buffer2);
         server_post_act('C');
     }
 
     // 07 댓글 패킷 처리
     else if(!strncmp(type, &comment, 1) && !strncmp(mode, &req, 1)){
         printf("댓글\n");
-        strncpy(n, &packet[2], 1);
-        printf("CRUD: %c\n", *n);
+        char CRUD[2];
+        memset(CRUD, 0, sizeof(CRUD));
+        strncpy(CRUD, &packet[2], 1);
+        printf("CRUD: %c\n", *CRUD);
 
         strncpy(n, &packet[3], 1);
         printf("COMMENT length: %d\n", *n);
         strncpy(buffer, &packet[4], *n);
         printf("COMMENT: %s\n", buffer);
 
+        printf("[REQ] COMMENT_ACT: CRUD (%s), COMMENT (%s)\n", CRUD, buffer);
         server_comment_act('C');
     }
 

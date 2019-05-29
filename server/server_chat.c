@@ -23,6 +23,7 @@ void server_choice_chat_room(){
     // 채팅방에 정보 등록
 
     // 채팅방 입장 성공 응답
+    printf("[RES] enter_room success: ID (%s), ROOM_NAME (%s)\n", u1.ID,  room_name); 
     create_packet(3,2,"1", buf); // 응답패킷 만들어서
     send_packet(s1.sockfd, buf, s1.clntAddr); // 전송
 }
@@ -35,7 +36,7 @@ void server_chat(char *message){
     memset(buf2, 0, BUFSIZE+1);
 
     // 채팅 메시지 수신 성공 응답
-    printf("message rcv success\n"); 
+    printf("[RES] message(room -> user) success: MESSAGE (%s), ROOM_NAME (%s)\n", message,  room_name); 
     create_packet(4, 2, "1", buf); // 응답패킷 만들어서
     send_packet(s1.sockfd, buf, s1.clntAddr); // 전송
 
@@ -49,9 +50,13 @@ void server_chat(char *message){
     strcat(buf, message);
     create_packet(5, 1, buf, buf2);
     send_packet(s1.sockfd, buf2, s1.clntAddr);
-    printf("뿌리기\n");
+    printf("[REQ] message(room -> user): MESSAGE (%s), ROOM_NAME (%s)\n", buf, room_name);
 
     // 채팅 메시지 수신 실패
+}
+
+void server_chat2(){
+    // 응답처리
 }
 
 void server_room_search(char *buff){

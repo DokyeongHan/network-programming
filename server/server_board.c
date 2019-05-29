@@ -25,6 +25,7 @@ void server_post_act(char CRUD){
     // 게시글 요청 처리 성공 응답
     create_packet(6,2,"1", buf); // 응답패킷 만들어서
     send_packet(s1.sockfd, buf, s1.clntAddr); // 전송
+    printf("[RES] POST_ACT success: CRUD (%c), TITLE (%s), DESCRIPTION (%s)\n", CRUD, buffer, buffer2);
 }
 
 // 댓글 요청
@@ -36,4 +37,5 @@ void server_comment_act(char CRUD){
     // 댓글 요청 처리 성공 응답
     create_packet(7,2,"1", buf); // 응답패킷 만들어서
     send_packet(s1.sockfd, buf, s1.clntAddr); // 전송
+    printf("[RES] COMMENT_ACT success: CRUD (%c), COMMENT (%s)\n", CRUD, buffer);
 }

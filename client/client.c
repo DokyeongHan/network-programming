@@ -54,11 +54,13 @@ int main( int argc, char **argv)
 
 		// char CRUD[1];
 		// memset(CRUD, 'C', 1);
-		client_chat();
+		// client_chat();
+
+		// client_choice_chat_room();
 
 		// client_choice_chat_room('C');
 
-		// client_comment_act('C');
+		client_comment_act('C');
 
 		// client_room_follow();
 

@@ -38,6 +38,7 @@ struct socketInfo s1;
 struct roomList roomList[3000];
 char buffer[BUFSIZE+1];
 char buffer2[BUFSIZE+1];
+char room_name[100];
 
 
 // com.c
@@ -50,6 +51,7 @@ void server_chat(char *message);
 void server_choice_chat_room();
 void server_room_search(char *buff);
 void server_room_follow(char *buff);
+void server_chat2();
 
 // server_board.c
 void server_post_act(char CRUD);
