@@ -10,6 +10,11 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <sys/wait.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <signal.h>
+#include <pthread.h>
+
 #define BUFSIZE 1024
 
 struct userInfo{
@@ -20,17 +25,19 @@ struct userInfo{
 
 struct socketInfo{
     struct sockaddr_in servAddr;
-    int sockfd;
+    int sock;
 };
 
 struct userInfo u1;
 struct socketInfo s1;
 char buffer[BUFSIZE+1];
+char buffer2[BUFSIZE+1];
+int sock;
 
 // com.c
-void receive_packet(char *packet);
+int receive_packet(char *packet);
 void create_packet(char type, char mode, char *data ,char *buf);
-void send_packet(int sockfd, char *buf, struct sockaddr_in clntAddr);
+void send_packet(int sockfd, char *buf, struct sockaddr_in servAddr);
 
 // client_chat.c
 void client_choice_chat_room();
@@ -48,7 +55,21 @@ void client_manage_room(char CRUD);
 void client_manage_board(char CRUD);
 
 // client_user.c
-void client_login();
+int client_login();
 void client_signup();
+
+// ui.c
+void start();
+void join();
+void login();
+void ls();
+void chatroom();
+void board();
+void allchatroom();
+void followchatroom();
+void chatroomsearch();
+void post1();
+void post2();
+void mkpost();
 
 // client.c (main)

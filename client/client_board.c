@@ -43,7 +43,10 @@ void client_post_act(char CRUD){
 
     // 게시글 패킷 만들어서 전송
     create_packet(6, 1, data, buf); 
-    send_packet(s1.sockfd, buf, s1.servAddr);
+    write(s1.sock, buf, BUFF_SIZE);
+    memset(buf, 0, BUFF_SIZE+1);
+    read(s1.sock, buf, BUFF_SIZE);
+    receive_packet(buf);
 }
 
 // 댓글 요청
@@ -68,5 +71,8 @@ void client_comment_act(char CRUD){
 
     // 댓글 패킷 만들어서 전송
     create_packet(7, 1, data, buf); 
-    send_packet(s1.sockfd, buf, s1.servAddr);
+    write(s1.sock, buf, BUFF_SIZE);
+    memset(buf, 0, BUFF_SIZE+1);
+    read(s1.sock, buf, BUFF_SIZE);
+    receive_packet(buf);
 }

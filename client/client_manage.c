@@ -35,9 +35,12 @@ void client_manage_room(char CRUD){
     memset(data + 1, strlen(roomname), 1); // roomname 길이 붙이고
     strcat(data, roomname); // roomname 붙인다.
 
-    // 로그인 패킷 만들어서 전송
+    // 방만들기 패킷 만들어서 전송
     create_packet(8, 1, data, buf); 
-    send_packet(s1.sockfd, buf, s1.servAddr);
+    write(s1.sock, buf, BUFF_SIZE);
+    memset(buf, 0, BUFF_SIZE+1);    
+    read(s1.sock, buf, BUFF_SIZE);
+    receive_packet(buf);
 }
 
 void client_manage_board(char CRUD){
@@ -61,5 +64,8 @@ void client_manage_board(char CRUD){
 
     // 로그인 패킷 만들어서 전송
     create_packet(9, 1, data, buf); 
-    send_packet(s1.sockfd, buf, s1.servAddr);
+    write(s1.sock, buf, BUFF_SIZE);
+    memset(buf, 0, BUFF_SIZE+1);    
+    read(s1.sock, buf, BUFF_SIZE);
+    receive_packet(buf);
 }

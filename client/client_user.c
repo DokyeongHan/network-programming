@@ -9,6 +9,7 @@
 
 개정이력: 
 (2019-05-26) client_login, client_signup 함수 작성
+(2019-05-30) 
 
 저작권: 5조
 */ 
@@ -16,7 +17,7 @@
 #include "header.h"
 #define BUFF_SIZE 1024
 
-void client_login(){
+int client_login(){
     // 변수 선언
     char buf[BUFF_SIZE+1];
     char data[BUFF_SIZE+1];
@@ -24,15 +25,20 @@ void client_login(){
     char PW[BUFF_SIZE+1];
 
     // 변수 초기화
+    memset(&u1, 0, sizeof(struct userInfo));
     memset(buf, 0, BUFF_SIZE+1);
     memset(data, 0, BUFF_SIZE+1);
-    memset(&u1, 0, sizeof(struct userInfo));
     memset(ID, 0, sizeof(ID));
     memset(PW, 0, sizeof(PW));
     
     // ID, PW 입력
+    printf("   ID : ");
     scanf("%s", ID); 
+    printf("\n\n");
+   	printf("   PW : ");
     scanf("%s", PW); 
+    printf("\n\n");
+	printf("--------------------\n\n");
 
     // userInfo 구조체에 정보 저장
     strcpy(u1.ID, ID);
@@ -45,9 +51,14 @@ void client_login(){
     memset(data+strlen(ID)+1, strlen(PW), 1); // PW 길이 붙이고
     strcat(data, PW); // PW 붙인다
 
-    // 로그인 패킷 만들어서 전송
+    // 로그인 패킷 만들어서 전송하고 응답 수신
     create_packet(1, 1, data, buf); 
-    send_packet(s1.sockfd, buf, s1.servAddr);
+    write(sock, buf, BUFF_SIZE);
+    memset(buf, 0, BUFF_SIZE+1);   
+    read(sock, buf, BUFF_SIZE);
+    receive_packet(buf);
+
+    return 1;
 }
 
 void client_signup(){
@@ -58,10 +69,12 @@ void client_signup(){
     char PW[BUFF_SIZE+1];
     char NAME[BUFF_SIZE+1];
 
+    int result;
+
     // 변수 초기화
+    memset(&u1, 0, sizeof(struct userInfo));
     memset(buf, 0, BUFF_SIZE+1);
     memset(data, 0, BUFF_SIZE+1);
-    memset(&u1, 0, sizeof(struct userInfo));
     memset(ID, 0, sizeof(ID));
     memset(PW, 0, sizeof(PW));
     memset(NAME, 0, sizeof(NAME));
@@ -87,5 +100,16 @@ void client_signup(){
 
     // 회원가입 패킷 만들어서 전송
     create_packet(2, 1, data, buf); 
-    send_packet(s1.sockfd, buf, s1.servAddr);
+    write(s1.sock, buf, BUFF_SIZE);
+    memset(buf, 0, BUFF_SIZE+1);    
+    read(s1.sock, buf, BUFF_SIZE);
+    receive_packet(buf);
+    // result = receive_packet();
+
+    // 회원가입 성공시 바로 로그인 하게
+    // if(result == 1){
+    //     create_packet(1, 1, data, buf); 
+    //     send_packet(s1.sockfd, buf, s1.servAddr);
+    //     receive_packet(s1.sockfd, s1.servAddr);
+    // }
 }

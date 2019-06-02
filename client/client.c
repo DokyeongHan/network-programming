@@ -17,73 +17,163 @@
 
 #define BUFF_SIZE 1024
 
+void *t_function(){
+	char buf[BUFF_SIZE+1];
+	int server_addr_size;
+	server_addr_size = sizeof(s1.servAddr);
+
+	while(1){
+		memset(buf, 0, BUFF_SIZE);
+		recvfrom(s1.sock, buf, BUFF_SIZE, 0 , (struct sockaddr*)&s1.servAddr, &server_addr_size);
+		receive_packet(buf);
+	}
+}
+
 int main( int argc, char **argv)
 {
-	int   sock;
+	// int   sock;
+	int sel;
+	int tag = 0;
 	int   server_addr_size;
 	struct sockaddr_in server_addr;
 	char buff_rcv[BUFF_SIZE+1];
 	char buff_snd[BUFF_SIZE+1];
 	char data[BUFF_SIZE+1];
 	int test;
+	pthread_t firstThread;
 	
+	int shmid;
+    void *shmaddr;
+    struct shmid_ds shm_stat;
 
-	// init (server) addr_size	
-	server_addr_size  = sizeof(server_addr);
-	
-	
-	// Build local (server) socket address
-	memset(&server_addr, 0, server_addr_size);
+	//TCP
+	sock = socket(PF_INET, SOCK_STREAM, 0);
+	if(sock == -1)
+	{
+		printf("socket 생성 실패\n");
+    	exit(1);	
+	}
+
+	memset(&server_addr, 0, sizeof(server_addr));
 	server_addr.sin_family     = AF_INET;
 	server_addr.sin_port       = htons(50000);
 	server_addr.sin_addr.s_addr= inet_addr("127.0.0.1");
-	
-	
-	// Create socket
-	if((sock = socket(PF_INET, SOCK_DGRAM, 0)) < 0) {
-		printf( "socket 생성 실패\n");
+
+	if( -1 == connect( sock, (struct sockaddr*)&server_addr, sizeof( server_addr) ) )
+	{
+		printf("접속 실패\n");
 		exit( 1);
 	}
-
-	// 소켓 정보 저장
+	s1.sock = sock;
 	s1.servAddr = server_addr;
-    s1.sockfd = sock;
-	
-	while(1){
-		memset(buff_rcv, 0, sizeof(buff_rcv));
 
-		// char CRUD[1];
-		// memset(CRUD, 'C', 1);
-		// client_chat();
+	while(tag == 0){
+		system("clear");
+		start();
+		scanf("%d", &sel);
+		while (getchar() != '\n');
+		if(sel == 1){
+			system("clear");
+			join();
+			sleep(1);
+		}
+		else if(sel == 2){
+			system("clear");
+			login();
+			sel = client_login();
+			if(sel == 1){
+				break;
+				printf("asd\n");
+				sleep(5);
+			}
+			else{
 
-		// client_choice_chat_room();
-
-		// client_choice_chat_room('C');
-
-		client_comment_act('C');
-
-		// client_room_follow();
-
-		// // Send echo string
-		// test = sendto(sock, buff_snd, strlen(buff_snd)+1, 0,    // +1: NULL까지 포함해서 전송
-		// 			(struct sockaddr*)&server_addr, sizeof(server_addr));
-		
-		// Receive echo string
-		// recvfrom(sock, buff_rcv, BUFF_SIZE, 0 , 
-		// 		(struct sockaddr*)&server_addr, &server_addr_size);
-		
-		// Print echoed string
-		// printf("receive: %s\n", buff_rcv);
-		// sleep(1);
+			}
+		}
+		else if(sel == -1){
+			break;
+		}
+		else{
+			continue;
+		}
 	}
-		
-	// Close the socket
-	close(sock);
-	
-	// Stop the program
-	return 0;
-}
 
+
+
+
+
+
+
+	// pthread_create(&firstThread, NULL, t_function, NULL);
+	// while(1){
+	// 	client_login();
+	// 	// client_signup();
+	// 	// client_manage_room('C');
+	// 	// client_choice_chat_room();
+
+	// 	// while(1){
+	// 	// 	client_chat();
+	// 	// }
+	// 		// client_post_act('C');
+	// 		// client_comment_act('C');
+	// 		// client_manage_room('C');
+	// 		// client_manage_board('C');
+	// 		// client_room_search();
+	// 		// client_room_follow();
+	// }
+	// close( sock);
+
+	// UDP
+	// // init (server) addr_size	
+	// server_addr_size  = sizeof(server_addr);
+	
+	// // Build local (server) socket address
+	// memset(&server_addr, 0, server_addr_size);
+	// server_addr.sin_family     = AF_INET;
+	// server_addr.sin_port       = htons(50000);
+	// server_addr.sin_addr.s_addr= inet_addr("127.0.0.1");
+	
+	
+	// // Create socket
+	// if((sock = socket(PF_INET, SOCK_DGRAM, 0)) < 0) {
+	// 	printf( "socket 생성 실패\n");
+	// 	exit( 1);
+	// }
+
+	// while(1){
+	// 	memset(buff_rcv, 0, sizeof(buff_rcv));
+		
+	// 	client_login();
+	// 	// client_signup();
+	// 	client_choice_chat_room();
+	// 	while(1){
+	// 		client_chat();
+	// 	}
+	// 	// client_post_act('C');
+	// 	// client_comment_act('C');
+	// 	// client_manage_room('C');
+	// 	// client_manage_board('C');
+	// 	// client_room_search();
+	// 	// client_room_follow();
+
+	// 	// // Send echo string
+	// 	// test = sendto(sock, buff_snd, strlen(buff_snd)+1, 0,    // +1: NULL까지 포함해서 전송
+	// 	// 			(struct sockaddr*)&server_addr, sizeof(server_addr));
+		
+	// 	// Receive echo string
+	// 	// recvfrom(sock, buff_rcv, BUFF_SIZE, 0 , (struct sockaddr*)&server_addr, &server_addr_size);
+				
+	// 	// Print echoed string
+	// 	// printf("receive: %d\n", buff_rcv[2]);
+	// 	// sleep(1);
+	// }
+		
+	// // Close the socket
+	// close(sock);
+	
+	// // Stop the program
+	// return 0;
+}
 /*
 수정한 부분
 1. 코드 첫 부분에 최초작성자, 작성일, 변경일 등 주석 추가.

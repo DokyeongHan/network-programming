@@ -18,24 +18,32 @@
 
 // 게시글 요청
 void server_post_act(char CRUD){
+    char data[BUFSIZE+1];
     char buf[BUFSIZE+1];
+    memset(data, 0, BUFSIZE+1);
     memset(buf, 0, BUFSIZE+1);
+
     // 게시글 요청 처리
 
     // 게시글 요청 처리 성공 응답
-    create_packet(6,2,"1", buf); // 응답패킷 만들어서
-    send_packet(s1.sockfd, buf, s1.clntAddr); // 전송
-    printf("[RES] POST_ACT success: CRUD (%c), TITLE (%s), DESCRIPTION (%s)\n", CRUD, buffer, buffer2);
+    memset(&data[0], 1, 1); // 성공 1
+    create_packet(6, 2, data, buf); // 응답 패킷 만들어서
+    write(s1.sock, buf, BUFSIZE);
+    printf("[RES] POST_ACT success: CRUD (%c)\n", CRUD);
 }
 
 // 댓글 요청
 void server_comment_act(char CRUD){
+    char data[BUFSIZE+1];
     char buf[BUFSIZE+1];
+    memset(data, 0, BUFSIZE+1);
     memset(buf, 0, BUFSIZE+1);
+
     // 댓글 요청 처리
 
     // 댓글 요청 처리 성공 응답
-    create_packet(7,2,"1", buf); // 응답패킷 만들어서
-    send_packet(s1.sockfd, buf, s1.clntAddr); // 전송
-    printf("[RES] COMMENT_ACT success: CRUD (%c), COMMENT (%s)\n", CRUD, buffer);
+    memset(&data[0], 1, 1); // 성공 1
+    create_packet(7, 2, data, buf); // 응답 패킷 만들어서
+    write(s1.sock, buf, BUFSIZE);
+    printf("[RES] COMMENT_ACT success: CRUD (%c)\n", CRUD);
 }
