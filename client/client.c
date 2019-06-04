@@ -17,6 +17,27 @@
 
 #define BUFF_SIZE 1024
 
+void print_post(){
+
+        if (runQuery("select title, content from posts limit 5") < 0) {
+                return -2;
+        }
+
+        printf("%+50s   %-15s \n", "title", "content");
+        while ((row = mysql_fetch_row(res)) != NULL )
+        {
+                printf("%+50s   %-15s", row[0], row[1]);
+                printf("\n");
+        }
+
+}
+
+void header_main_logo() {
+  system("clear");
+  logo_head();
+  printf("%70s, Hello !\n", u1.ID);
+}
+
 void *t_function(){
 	char buf[BUFF_SIZE+1];
 	int server_addr_size;
@@ -33,7 +54,8 @@ int main( int argc, char **argv)
 {
 	// int   sock;
 	int sel;
-	int tag = 0;
+  int loginflag = 0;
+	int tag1 = 0, tag2 = 0 , tag3 = 0;
 	int   server_addr_size;
 	struct sockaddr_in server_addr;
 	char buff_rcv[BUFF_SIZE+1];
@@ -66,43 +88,70 @@ int main( int argc, char **argv)
 	}
 	s1.sock = sock;
 	s1.servAddr = server_addr;
+  
+  printf("success\n");
+  start_1();
 
-	while(tag == 0){
-		system("clear");
+  if (connectDB() < 0) {
+    printf("DB Connect fail\n");
+    return -1;
+  }
+
+  // UI 시작
+	while(tag1 == 0){
+    system("clear");
+    logo_head();
 		start();
 		scanf("%d", &sel);
-		while (getchar() != '\n');
-		if(sel == 1){
-			system("clear");
-			join();
-			sleep(1);
-		}
-		else if(sel == 2){
-			system("clear");
-			login();
-			sel = client_login();
-			if(sel == 1){
-				break;
-				printf("asd\n");
-				sleep(5);
-			}
-			else{
+		// while (getchar() != '\n');
 
-			}
-		}
-		else if(sel == -1){
-			break;
-		}
-		else{
-			continue;
-		}
+
+    // case -1 : 퇴장 / 1 : 회원가입 / 2 : 로그인
+    switch(sel) {
+      case -1:
+        tag1 = -1;
+        break;
+      case 1:
+        join();
+        break;
+      case 2:
+        login();
+        loginflag = client_login();
+        if(loginflag == 1) {
+          header_main_logo();
+          sleep(1);
+
+          while(tag2 == 0) {
+            ls();
+            scanf("%d", &sel);
+
+            // case 1 : 채팅방 / 2 : 게시판
+            switch(sel) {
+              case 1:
+                header_main_logo();
+                chatroom();
+                print_post();
+
+                scanf("%d", &sel);
+                break;
+              case 2:
+                header_main_logo();
+                board();
+
+                scanf("%d", &sel);
+                break;
+            }
+          }
+        }
+        // login fail
+        else {
+          printf("Login fail\n");
+        }
+    }
 	}
+  printf("why?\n");
 
-
-
-
-
-
+  closeDB();
 
 	// pthread_create(&firstThread, NULL, t_function, NULL);
 	// while(1){
