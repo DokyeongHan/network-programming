@@ -99,7 +99,7 @@ void server_manage_board(char *CRUD, char *boardname){
     memset(buffer2, 0, BUFSIZE+1);
 
     // 게시판 만든다.
-
+    
     // 게시판 만들기 성공
     memset(buffer, 1, 1); // 성공 1
     create_packet(9, 2, buffer, buffer2); // 응답패킷 만들어서

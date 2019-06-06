@@ -35,10 +35,8 @@ char buffer[BUFSIZE+1];
 char buffer2[BUFSIZE+1];
 int sock;
 
-MYSQL_RES *res;
-MYSQL_ROW row;
-MYSQL *conn;
-//DB var
+char DbErrMsg[BUFSIZE+1];
+// Error Message var
 
 // com.c
 int receive_packet(char *packet);
@@ -86,12 +84,3 @@ void start_7();
 void start_8();
 void logo_head();
 // client.c (main)
-
-int runQuery(char *query);
-int connectDB();
-void closeDB();
-void errorMsg(char *errMsg);
-int fetchRow(void);
-void fetchfieldbyID(int id, char *buffer, int len);
-void fetchfieldbyName(const char *name, char *buffer, int len);
-//client_odbc.c

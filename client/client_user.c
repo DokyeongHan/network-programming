@@ -24,6 +24,8 @@ int client_login(){
     char ID[BUFF_SIZE+1];
     char PW[BUFF_SIZE+1];
 
+    int result;
+
     // 변수 초기화
     memset(&u1, 0, sizeof(struct userInfo));
     memset(buf, 0, BUFF_SIZE+1);
@@ -38,7 +40,7 @@ int client_login(){
    	printf("   PW : ");
     scanf("%s", PW); 
     printf("\n\n");
-	printf("--------------------\n\n");
+  	printf("--------------------\n\n");
 
     // userInfo 구조체에 정보 저장
     strcpy(u1.ID, ID);
@@ -56,7 +58,13 @@ int client_login(){
     write(sock, buf, BUFF_SIZE);
     memset(buf, 0, BUFF_SIZE+1);   
     read(sock, buf, BUFF_SIZE);
-    receive_packet(buf);
+    result = receive_packet(buf);
+
+    if (!result) {
+      system("clear");
+      printf("login fail. retry ! \n");
+      client_login();
+    }
 
     return 1;
 }
@@ -103,13 +111,20 @@ void client_signup(){
     write(s1.sock, buf, BUFF_SIZE);
     memset(buf, 0, BUFF_SIZE+1);    
     read(s1.sock, buf, BUFF_SIZE);
-    receive_packet(buf);
+    result = receive_packet(buf);
+    printf("%s \n", buf);
     // result = receive_packet();
 
     // 회원가입 성공시 바로 로그인 하게
-    // if(result == 1){
-    //     create_packet(1, 1, data, buf); 
-    //     send_packet(s1.sockfd, buf, s1.servAddr);
-    //     receive_packet(s1.sockfd, s1.servAddr);
-    // }
+    // 회원가입 성공 여부 판단
+
+    if(result == 1){
+        printf("Login Success\n");
+        sleep(2);
+    }
+    else {
+        printf("SignUp Fail\n");
+        printf("%s\n", DbErrMsg);
+        sleep(2);
+    }
 }

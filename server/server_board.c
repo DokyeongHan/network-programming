@@ -24,6 +24,9 @@ void server_post_act(char CRUD){
     memset(buf, 0, BUFSIZE+1);
 
     // 게시글 요청 처리
+    
+
+
 
     // 게시글 요청 처리 성공 응답
     memset(&data[0], 1, 1); // 성공 1

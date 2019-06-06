@@ -97,15 +97,18 @@ int receive_packet(char *packet){
 
         // 성공, 실패 부분 가져오기
         memset(n, packet[2], 1);
+        memset(DbErrMsg, packet[3], sizeof(packet[3])+1);
 
         // 성공
         if(!strncmp(n, &T, 1)){
             printf("signup success\n");
+            sleep(1);
             return 1;
         }
         // 실패
         else if(!strncmp(n, &F, 1)){
             printf("signup failed\n");
+            sleep(1);
             return 0;
         }
     }

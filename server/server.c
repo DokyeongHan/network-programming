@@ -46,6 +46,10 @@ int main(void){
     servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     servAddr.sin_port = htons(PORT);
 
+    if (connectDB() < 0) {
+      printf("DB Connect fail\n");
+      return -1;
+    }
     // bind
     if(bind(server_fd, (struct sockaddr *)&servAddr, sizeof(servAddr))<0){
         printf("Server : Can't bind local address.\n");
@@ -101,6 +105,8 @@ int main(void){
             printf("Server : %s client closed.\n", temp);
         }
     }
+    closeDB();
+    printf("DB Closing.\n");
 
     // UDP
     // // 소켓 생성

@@ -17,21 +17,6 @@
 
 #define BUFF_SIZE 1024
 
-void print_post(){
-
-        if (runQuery("select title, content from posts limit 5") < 0) {
-                return -2;
-        }
-
-        printf("%+50s   %-15s \n", "title", "content");
-        while ((row = mysql_fetch_row(res)) != NULL )
-        {
-                printf("%+50s   %-15s", row[0], row[1]);
-                printf("\n");
-        }
-
-}
-
 void header_main_logo() {
   system("clear");
   logo_head();
@@ -90,14 +75,8 @@ int main( int argc, char **argv)
 	s1.servAddr = server_addr;
   
   printf("success\n");
-  start_1();
+  // start_1();
 
-  if (connectDB() < 0) {
-    printf("DB Connect fail\n");
-    return -1;
-  }
-
-  // UI 시작
 	while(tag1 == 0){
     system("clear");
     logo_head();
@@ -113,6 +92,8 @@ int main( int argc, char **argv)
         break;
       case 1:
         join();
+        sleep(1);
+        client_signup();
         break;
       case 2:
         login();
@@ -130,7 +111,6 @@ int main( int argc, char **argv)
               case 1:
                 header_main_logo();
                 chatroom();
-                print_post();
 
                 scanf("%d", &sel);
                 break;
@@ -147,11 +127,11 @@ int main( int argc, char **argv)
         else {
           printf("Login fail\n");
         }
+      break;
     }
 	}
   printf("why?\n");
 
-  closeDB();
 
 	// pthread_create(&firstThread, NULL, t_function, NULL);
 	// while(1){

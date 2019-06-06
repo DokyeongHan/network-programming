@@ -36,9 +36,9 @@ void client_manage_room(char CRUD){
     strcat(data, roomname); // roomname 붙인다.
 
     // 방만들기 패킷 만들어서 전송
-    create_packet(8, 1, data, buf); 
+    create_packet(8, 1, data, buf);
     write(s1.sock, buf, BUFF_SIZE);
-    memset(buf, 0, BUFF_SIZE+1);    
+    memset(buf, 0, BUFF_SIZE+1);
     read(s1.sock, buf, BUFF_SIZE);
     receive_packet(buf);
 }

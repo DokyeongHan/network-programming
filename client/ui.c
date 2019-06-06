@@ -109,7 +109,7 @@ void post2(){
 }
 
 //게시글 작성
-void mkpost(){
+void mkpost() {
 	printf("게시글 작성\n");
 	printf("--------------------\n\n");
 	printf("1. Title : \n\n");

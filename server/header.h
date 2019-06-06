@@ -13,6 +13,7 @@
 #include <sys/shm.h>
 #include <sys/ipc.h>
 #include <pthread.h>
+#include <mysql/mysql.h>
 
 #define BUFSIZE 1024
 
@@ -48,6 +49,12 @@ int sock;
 
 int shmid;  
 
+MYSQL_RES *res;
+MYSQL_ROW row;
+MYSQL *conn;
+char DbErrMsg[BUFSIZE+1];
+//DB var
+
 // com.c
 void receive_packet(char *packet);
 void create_packet(char type, char mode, char *data ,char *buf);
@@ -74,6 +81,13 @@ void server_signup();
 
 // server.c
 
+int runQuery(char *query);
+int connectDB();
+void closeDB();
+void errorMsg(char *errMsg);
+int fetchRow(void);
+void fetchfieldbyID(int id, char *buffer, int len);
+void fetchfieldbyName(const char *name, char *buffer, int len);
 
 	// while(tag==0) {
 	// 	// accept
