@@ -30,12 +30,14 @@ struct socketInfo{
 
 struct roomUserList{
     struct userInfo userInfo;
-    struct socketInfo socketInfo;
 };
 
 struct roomList{
-    char room_name[30];
-    struct roomUserList roomUserList[50];
+    char room_name[30]; // 방 이름
+   int port; // 멀티캐스팅 포트번호
+   int mulsock;
+   struct sockaddr_in multi_addr;
+    struct userInfo userInfo[50]; // 방에 있는 사람
 };
 
 struct userInfo u1;
@@ -90,37 +92,37 @@ int fetchRow(void);
 void fetchfieldbyID(int id, char *buffer, int len);
 void fetchfieldbyName(const char *name, char *buffer, int len);
 
-	// while(tag==0) {
-	// 	// accept
-	// 	if((clnt_sock = accept(serv_sock,(struct sockaddr*)&clntAddr, &clntAddrLen))<0) {
-	// 		perror("Error:accepting failed!");
-	// 		exit(1);
-	// 	}
-	// 	pid = fork();
-	// 	if(pid==0){
+   // while(tag==0) {
+   //    // accept
+   //    if((clnt_sock = accept(serv_sock,(struct sockaddr*)&clntAddr, &clntAddrLen))<0) {
+   //       perror("Error:accepting failed!");
+   //       exit(1);
+   //    }
+   //    pid = fork();
+   //    if(pid==0){
 
-	// 		//read & write	
-	// 		while((len = read(clnt_sock, buffer, MAXBUF))!=0)
-	// 		{				
-	// 			write(clnt_sock, string, strlen(string));
-	// 			printf("RECEIVED : %s\n", buffer);
+   //       //read & write   
+   //       while((len = read(clnt_sock, buffer, MAXBUF))!=0)
+   //       {            
+   //          write(clnt_sock, string, strlen(string));
+   //          printf("RECEIVED : %s\n", buffer);
 
-	// 			sleep(1);
-	// 			write(clnt_sock, buffer, len);
-	// 			len = read(clnt_sock, buffer, MAXBUF);
-	// 			buffer[len]=0;
-	// 			printf("CLIENT : %s\n", buffer);
-	// 			if(!strcmp(buffer,"quit")) {
-	// 				memset(buffer,0,sizeof(buffer));
-	// 				tag =1;	
-	// 			}
-	// 			memset(buffer,0,sizeof(buffer));
-	// 		}
-	// 	}
-	// 	if(pid==-1){
-	// 		perror("fork error: ");
-	// 		return 1;
-	// 	}
-	// }
-	// close(clnt_sock);
-	// return 0;
+   //          sleep(1);
+   //          write(clnt_sock, buffer, len);
+   //          len = read(clnt_sock, buffer, MAXBUF);
+   //          buffer[len]=0;
+   //          printf("CLIENT : %s\n", buffer);
+   //          if(!strcmp(buffer,"quit")) {
+   //             memset(buffer,0,sizeof(buffer));
+   //             tag =1;   
+   //          }
+   //          memset(buffer,0,sizeof(buffer));
+   //       }
+   //    }
+   //    if(pid==-1){
+   //       perror("fork error: ");
+   //       return 1;
+   //    }
+   // }
+   // close(clnt_sock);
+   // return 0;

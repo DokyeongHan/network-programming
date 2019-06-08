@@ -210,18 +210,24 @@ void receive_packet(char *packet){
     // 11 채팅방 팔로우 패킷
     else if(!strncmp(type, &room_follow, 1) && !strncmp(mode, &req, 1)){
         char room_name[BUFF_SIZE+1];
+        char room_length[2];
+        char R = 3;
+        char C = 4;
 
         memset(room_name, 0, sizeof(room_name));
         strncpy(n, &packet[2], 1);
         
-        if (strncmp(n, "3", 1)) {
+        printf("number is : %s \n", n);
+        if (!strncmp(n, &R, 1)) {
           server_search_room_follow();
           printf("[REQ] search_follow_room \n");
 
         }
-        else if (strncmp(n, "4", 1)) {
-          strncpy(n, &packet[3], 1);
-          strncpy(room_name, &packet[4], *n);
+        else {
+          strncpy(room_length, &packet[3], 1);
+          printf("%s\n", room_length);
+          strncpy(room_name, &packet[4], *room_length);
+          printf("%s\n", room_name);
 
           server_room_follow(room_name);
           printf("[REQ] follow_room: ROOM_NAME (%s)\n", room_name);

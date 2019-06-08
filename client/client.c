@@ -80,62 +80,65 @@ int main( int argc, char **argv)
 	while(tag1 == 0){
     system("clear");
     logo_head();
-		start();
-		scanf("%d", &sel);
+		// start();
+		// scanf("%d", &sel);
 		// while (getchar() != '\n');
     // printf("select your number \n");
     
     // client_search_room_follow();
-    // client_room_follow();
+    sleep(1);
+    client_room_follow();
 
+    // sleep(3);
 
     //case -1 : 퇴장 / 1 : 회원가입 / 2 : 로그인
-    switch(sel) {
-      case -1:
-        tag1 = -1;
-        break;
-      case 1:
-        join();
-        sleep(1);
-        client_signup();
-        break;
-      case 2:
-        login();
-        loginflag = client_login();
-        if(loginflag == 1) {
-          header_main_logo();
-          sleep(1);
+    // switch(sel) {
+    //   case -1:
+    //     tag1 = -1;
+    //     break;
+    //   case 1:
+    //     join();
+    //     sleep(1);
+    //     client_signup();
+    //     break;
+    //   case 2:
+    //     login();
+    //     loginflag = client_login();
+    //     if(loginflag == 1) {
+    //       header_main_logo();
+    //       sleep(1);
 
-          while(tag2 == 0) {
-            ls();
-            scanf("%d", &sel);
+    //       while(tag2 == 0) {
+    //         ls();
+    //         scanf("%d", &sel);
 
-            // case 1 : 채팅방 / 2 : 게시판
-            switch(sel) {
-              case 1:
-                header_main_logo();
-                chatroom();
+    //         // case 1 : 채팅방 / 2 : 게시판
+    //         switch(sel) {
+    //           case 1:
+    //             header_main_logo();
+    //             chatroom();
 
-                scanf("%d", &sel);
+    //             scanf("%d", &sel);
 
-                break;
-              case 2:
-                header_main_logo();
-                board();
+    //             break;
+    //           case 2:
+    //             header_main_logo();
+    //             board();
 
-                scanf("%d", &sel);
-                break;
-            }
-          }
-        }
-        // login fail
-        else {
-          printf("Login fail\n");
-        }
-      break;
-    }
+    //             scanf("%d", &sel);
+    //             break;
+    //         }
+    //       }
+    //     }
+    //     // login fail
+    //     else {
+    //       printf("Login fail\n");
+    //     }
+    //   break;
+    // }
+
 	}
-  printf("why?\n");
+  // printf("why?\n");
 
 
 	// pthread_create(&firstThread, NULL, t_function, NULL);

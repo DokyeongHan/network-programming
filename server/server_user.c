@@ -19,6 +19,7 @@
 
 // 로그인 처리
 void server_login(){
+  
     char buf[BUFSIZE+1];
     int result;
 
@@ -44,32 +45,45 @@ void server_login(){
   row = mysql_fetch_row(res);
   printf("return : %s\n", row[0]);
 
-  if (!strcmp(row[0], "1"))
-  { // 성공시
-    strcpy(u1.NAME, "123");
-    memset(&buffer[0], 1, 1); // 성공 1
-    memset(&buffer[1], 3, 1); // 이름 길이
-    strcat(buffer, u1.NAME);  // 이름
-
-
-    create_packet(1, 2, buffer, buffer2); // 응답 패킷 만들어서
-    write(s1.sock, buffer2, BUFSIZE);
-    printf("[RES] login success: ID (%s), PW (%s), NAME (%s)\n", u1.ID, u1.PW, u1.NAME);
+  // 관리자 로그인 성공
+  if(!strcmp(u1.ID, "hdk0521") && !strcmp(u1.PW, "123123")){
+      strcpy(u1.NAME, "123");
+      memset(&buffer[0], 3, 1); // 관리자 3
+      memset(&buffer[1], 3, 1); // 이름 길이
+      strcat(buf, u1.NAME); // 이름
+      
+      create_packet(1, 2, buffer, buffer2); // 응답 패킷 만들어서
+      write(s1.sock, buffer2, BUFSIZE);
+      printf("[RES] login success: ID (%s), PW (%s), NAME (%s)\n", u1.ID, u1.PW, u1.NAME); 
   }
-  else { // 실패시 
-  printf("her2\n");
+  else if (!strcmp(row[0], "0"))
+  { // 실패시
     memset(&buffer[0], 2, 1);
     create_packet(1,2,buffer, buffer2); // 응답 패킷 만들어서
     write(s1.sock, buffer2, BUFSIZE);
     printf("[RES] login failed: ID (%s), PW (%s)\n", u1.ID, u1.PW);
   }
-  
+  else { // 성공시 
+    strcpy(u1.NAME, "123");
+    memset(&buffer[0], 1, 1); // 성공 1
+    memset(&buffer[1], 3, 1); // 이름 길이
+    strcat(buffer, u1.NAME);  // 이름
+
+    create_packet(1, 2, buffer, buffer2); // 응답 패킷 만들어서
+    write(s1.sock, buffer2, BUFSIZE);
+    printf("[RES] login success: ID (%s), PW (%s), NAME (%s)\n", u1.ID, u1.PW, u1.NAME);
+
+  }
+
   closeDB();
   connectDB();
 }
 
 // 회원가입 처리
 void server_signup(){
+    closeDB();
+    connectDB();
+
     memset(buffer, 0, BUFSIZE+1);
     memset(buffer2, 0, BUFSIZE+1);
 
@@ -85,7 +99,7 @@ void server_signup(){
     printf("Run Query : %s \n", query);
 
     if (runQuery(query) < 0) { // Query 실행 실패시 ErrMsg 출력
-        memset(buffer, 0, 1);
+        memset(buffer, 2, 1);
 
         create_packet(2, 2, buffer, buffer2);
         write(s1.sock, buffer2, BUFSIZE);
@@ -98,6 +112,4 @@ void server_signup(){
       printf("[RES] signup success: ID (%s), PW (%s), NAME (%s)\n", u1.ID, u1.PW, u1.NAME);
     }
 
-    closeDB();
-    connectDB();
 }
