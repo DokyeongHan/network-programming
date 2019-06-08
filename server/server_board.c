@@ -20,12 +20,47 @@
 void server_post_act(char CRUD){
     char data[BUFSIZE+1];
     char buf[BUFSIZE+1];
+    int b_index;
+    int p_index;
+    char post_title[BUFSIZE+1];
+    char post_comment[BUFSIZE+1];
+    char post_host_id[BUFSIZE+1];
+    
+    // b_index, p_index, title, comment, id
+    char query[BUFSIZE+1] = "";
+
     memset(data, 0, BUFSIZE+1);
     memset(buf, 0, BUFSIZE+1);
 
-    // 게시글 요청 처리
-    
 
+    // 게시글 CRUD 요청 별 처리
+    switch(CRUD) {
+      case 'C':
+        strcat(query, "INSERT INTO posts VALUES(\"");
+        strcat(query, b_index);
+        strcat(query, "\",\"");
+        strcat(query, p_index);
+        strcat(query, "\",\"");
+        strcat(query, post_title);
+        strcat(query, "\",\"");
+        strcat(query, post_comment);
+        strcat(query, "\",\"");
+        strcat(query, post_host_id);
+        strcat(query, "\"");
+        break;
+      case 'R':
+        // strcat(query, );
+        break;
+
+      case 'U':
+        // strcat(query, );
+        break;
+
+      case 'D':
+        // strcat(query, );
+        break;
+
+    }
 
 
     // 게시글 요청 처리 성공 응답

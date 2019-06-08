@@ -49,6 +49,7 @@ void client_chat();
 void client_chat2(char *message);
 void client_room_search();
 void client_room_follow();
+void client_search_room_follow();
 
 // client_board.c
 void client_post_act(char CRUD);

@@ -112,6 +112,7 @@ void client_room_search(){
     memset(roomname, 0, sizeof(roomname));
 
     // 채팅방 이름 입력
+    printf("insert your chat room \n");
     scanf("%s", roomname);
     
     // data 만들기
@@ -139,11 +140,39 @@ void client_room_follow(){
     memset(roomname, 0, sizeof(roomname));
 
     // 채팅방 이름 입력
+    printf("팔로우 하고싶은 채팅방을 입력하세요. \n");
     scanf("%s", roomname);
     
     // data 만들기
-    memset(data, strlen(roomname), 1); // roomname 길이 붙이고
+    memset(data, 4, 1);
+    memset(&data[1], strlen(roomname), 1); // roomname 길이 붙이고
     strcat(data, roomname); // roomname 붙인다.
+
+    // 패킷 만들어서 전송
+    create_packet(11, 1, data, buf); 
+    write(s1.sock, buf, BUFF_SIZE);
+    memset(buf, 0, BUFF_SIZE+1);    
+    read(s1.sock, buf, BUFF_SIZE);
+    receive_packet(buf);
+}
+
+// 채팅방 팔로우 검색
+void client_search_room_follow(){
+    // 변수 선언
+    char buf[BUFF_SIZE+1];
+    char data[BUFF_SIZE+1];
+
+    // 변수 초기화
+    memset(buf, 0, BUFF_SIZE+1);
+    memset(data, 0, BUFF_SIZE+1);
+
+    // 채팅방 이름 입력
+    printf("My following chatroom : \n");
+    
+
+    // R : search
+    memset(data, 3, 1); // search라는 패킷
+    // strcat(data, "R"); // roomname 붙인다.
 
     // 패킷 만들어서 전송
     create_packet(11, 1, data, buf); 

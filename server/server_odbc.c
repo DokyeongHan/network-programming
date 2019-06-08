@@ -64,7 +64,7 @@ void fetchfieldbyName(const char *name, char *buffer, int len)
 // 디비 연결
 int connectDB(void)
 {
-        char *server = "114.70.234.223";
+        char *server = "114.70.235.78";
         char *user = "root";
         char *password = "ul9968uj";
         char *database = "np_project";       

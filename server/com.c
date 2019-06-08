@@ -134,7 +134,7 @@ void receive_packet(char *packet){
         sum += *n;
         strncpy(n, &packet[4+sum], 1);
         strncpy(DESCRIPTION, &packet[5+sum], *n);
-
+        
         printf("[REQ] post_act: CRUD (%s), TITLE (%s), DESCRIPTION (%s)\n", CRUD, TITLE, DESCRIPTION);
         server_post_act('C');
     }
@@ -212,12 +212,20 @@ void receive_packet(char *packet){
         char room_name[BUFF_SIZE+1];
 
         memset(room_name, 0, sizeof(room_name));
-
         strncpy(n, &packet[2], 1);
-        strncpy(room_name, &packet[3], *n);
+        
+        if (strncmp(n, "3", 1)) {
+          server_search_room_follow();
+          printf("[REQ] search_follow_room \n");
 
-        printf("[REQ] follow_room: ROOM_NAME (%s)\n", room_name);
-        server_room_follow(room_name);
+        }
+        else if (strncmp(n, "4", 1)) {
+          strncpy(n, &packet[3], 1);
+          strncpy(room_name, &packet[4], *n);
+
+          server_room_follow(room_name);
+          printf("[REQ] follow_room: ROOM_NAME (%s)\n", room_name);
+        }
     }
 
     else {

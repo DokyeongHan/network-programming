@@ -51,48 +51,53 @@ void server_login(){
     memset(&buffer[1], 3, 1); // 이름 길이
     strcat(buffer, u1.NAME);  // 이름
 
+
     create_packet(1, 2, buffer, buffer2); // 응답 패킷 만들어서
     write(s1.sock, buffer2, BUFSIZE);
     printf("[RES] login success: ID (%s), PW (%s), NAME (%s)\n", u1.ID, u1.PW, u1.NAME);
   }
-  else
-  { // 실패시 
+  else { // 실패시 
   printf("her2\n");
     memset(&buffer[0], 2, 1);
     create_packet(1,2,buffer, buffer2); // 응답 패킷 만들어서
     write(s1.sock, buffer2, BUFSIZE);
     printf("[RES] login failed: ID (%s), PW (%s)\n", u1.ID, u1.PW);
   }
+  
+  closeDB();
+  connectDB();
 }
 
 // 회원가입 처리
 void server_signup(){
-        memset(buffer, 0, BUFSIZE+1);
-        memset(buffer2, 0, BUFSIZE+1);
+    memset(buffer, 0, BUFSIZE+1);
+    memset(buffer2, 0, BUFSIZE+1);
 
-        char query[BUFSIZE+1] = "INSERT INTO auth VALUES (\"";
+    char query[BUFSIZE+1] = "INSERT INTO auth VALUES (\"";
 
-        strcat(query, u1.ID);
-        strcat(query, "\",\"");
-        strcat(query, u1.PW);
-        strcat(query, "\",\"");
-        strcat(query, u1.NAME);
-        strcat(query, "\")");
+    strcat(query, u1.ID);
+    strcat(query, "\",\"");
+    strcat(query, u1.PW);
+    strcat(query, "\",\"");
+    strcat(query, u1.NAME);
+    strcat(query, "\")");
 
-        printf("Run Query : %s \n", query);
+    printf("Run Query : %s \n", query);
 
-        if (runQuery(query) < 0) { // Query 실행 실패시 ErrMsg 출력
-            memset(buffer, 0, 1);
+    if (runQuery(query) < 0) { // Query 실행 실패시 ErrMsg 출력
+        memset(buffer, 0, 1);
 
-            create_packet(2, 2, buffer, buffer2);
-            write(s1.sock, buffer2, BUFSIZE);
-        }
-        else { // Query 성공적 실행 시
-          memset(buffer, 1, 1); // 성공 1
+        create_packet(2, 2, buffer, buffer2);
+        write(s1.sock, buffer2, BUFSIZE);
+    }
+    else { // Query 성공적 실행 시
+      memset(buffer, 1, 1); // 성공 1
 
-          create_packet(2, 2, buffer, buffer2); // 응답패킷 만들어서
-          write(s1.sock, buffer2, BUFSIZE);
-          printf("[RES] signup success: ID (%s), PW (%s), NAME (%s)\n", u1.ID, u1.PW, u1.NAME); 
+      create_packet(2, 2, buffer, buffer2); // 응답패킷 만들어서
+      write(s1.sock, buffer2, BUFSIZE);
+      printf("[RES] signup success: ID (%s), PW (%s), NAME (%s)\n", u1.ID, u1.PW, u1.NAME);
+    }
 
-        }
+    closeDB();
+    connectDB();
 }

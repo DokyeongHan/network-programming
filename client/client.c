@@ -83,9 +83,13 @@ int main( int argc, char **argv)
 		start();
 		scanf("%d", &sel);
 		// while (getchar() != '\n');
+    // printf("select your number \n");
+    
+    // client_search_room_follow();
+    // client_room_follow();
 
 
-    // case -1 : 퇴장 / 1 : 회원가입 / 2 : 로그인
+    //case -1 : 퇴장 / 1 : 회원가입 / 2 : 로그인
     switch(sel) {
       case -1:
         tag1 = -1;
@@ -113,6 +117,7 @@ int main( int argc, char **argv)
                 chatroom();
 
                 scanf("%d", &sel);
+
                 break;
               case 2:
                 header_main_logo();

@@ -38,14 +38,21 @@ int receive_packet(char *packet){
     char manage_board = 9;
     char room_search = 10;
     char room_follow = 11;
+    // char room_follow_search = 12;
 
     char req = 1;
     char res = 2;
 
     char T = 1;
     char F = 2;
+    char ST = 3;
+    char SF = 4;
     
-	int server_addr_size;
+    int server_addr_size;
+
+    char chat_list[BUFF_SIZE + 1];
+    char chat_length[2];
+
 
     // 초기화
  	server_addr_size  = sizeof(s1.servAddr);
@@ -251,51 +258,79 @@ int receive_packet(char *packet){
         }
     }    
     
-    // 10 게시판 관리 패킷
+    // 10 채팅방 검색 패킷
     else if(!strncmp(type, &room_search,1) && !strncmp(mode, &res, 1)){
+        
         // 초기화
         memset(n, 0, sizeof(n));
         memset(buffer, 0, sizeof(buffer));
         memset(buffer2, 0, sizeof(buffer2));
 
+        memset(chat_list, 0, sizeof(chat_link));
+        memset(chat_length, 0, sizeof(chat_length));
+
         // 성공, 실패 부분 가져오기
         memset(n, packet[2], 1);
-
+        printf("n : %s\n", n);
         // 성공
-        if(!strncmp(n, &T, 1)){
+        if(!strncmp(n, &T, 1)) {
+            memset(chat_length, packet[3], 1);
+            strncpy(chat_list, &packet[4], *chat_length);
+
+            printf("%s \n", chat_list);
             printf("success\n");
             return 1;
         }
         // 실패
         else if(!strncmp(n, &F, 1)){
+            printf("fail \n");
             return 0;
+        }
+        else {
+            memset(chat_length, packet[3], 1);
+            strncpy(chat_list, &packet[4], *chat_length);
+
+            printf("%s \n", chat_list);
+            printf("success\n");
+            return 1;
         }
     }    
 
-    // 11 채팅방 팔로우 패킷
+    // 11 채팅방 팔로우/검색 패킷
     else if(!strncmp(type, &room_follow,1) && !strncmp(mode, &res, 1)){
         // 초기화
         memset(n, 0, sizeof(n));
         memset(buffer, 0, sizeof(buffer));
         memset(buffer2, 0, sizeof(buffer2));
+        memset(chat_list, 0, sizeof(chat_link));
+        memset(chat_length, 0, sizeof(chat_length));
+
 
         // 성공, 실패 부분 가져오기
         memset(n, packet[2], 1);
 
-        // 성공
-        if(!strncmp(n, &T, 1)){
-            printf("success\n");
-            return 1;
-        }
-        // 실패
-        else if(!strncmp(n, &F, 1)){
-            return 0;
-        }
-    }
+        // ST, SF : search
+        // T, F : follow
+        if(!strncmp(n, &ST, 1)) {
+          strncpy(chat_length, &packet[3], 1);
+          strncpy(chat_list, &packet[4], *chat_length);
 
-    else {
-        printf("없음");
-        exit(1);
+          printf("%s \n", chat_list);
+          printf("success\n");
+          return 1;
+        }
+        else if(!strncmp(n, &SF, 1)) {
+          printf("팔로우한 채팅방이 없습니다. \n");
+        }
+        else if(!strncmp(n, &T, 1)) {
+          memset(chat_length, packet[3], 1);
+          strncpy(chat_list, &packet[4], *chat_length);
+          printf("채팅방 팔로우에 성공하였습니다. \n" );
+        }
+        else if(!strncmp(n, &F, 1)) {
+          printf("채팅방 팔로우에 실패하였습니다. \n");
+          return 0;
+        }
     }
 }
 

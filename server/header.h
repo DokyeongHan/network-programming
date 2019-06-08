@@ -66,6 +66,7 @@ void server_choice_chat_room(char *roomname);
 void server_room_search(char *buff);
 void server_room_follow(char *buff);
 void server_chat2();
+void server_search_room_follow();
 
 // server_board.c
 void server_post_act(char CRUD);
